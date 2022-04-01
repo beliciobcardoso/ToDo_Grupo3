@@ -5,15 +5,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do App</title>
-
-  <!-- ---------------- estilos compartilhados entre login e signup ---------------- -->
   <link rel="stylesheet" href="styles/acesso.css">
-
-  <!-- ---------------------- lógica aplicada no registro -------------------- -->
-  <script src="/scripts/utils.js"></script>
-  <script src="/scripts/signup.js"></script>
-
+  <title>To-Do App</title>
 </head>
 
 <body>
@@ -27,35 +20,49 @@
         <p>To-Do App</p>
       </div>
 
-      <label>
-        Nome:
-        <input type="text">
-      </label>
-      <label>
-        Apelido:
-        <input type="text">
-      </label>
-      <label>
-        Email:
-        <input type="text">
-      </label>
-      <label>
-        Senha:
-        <input type="password">
-      </label>
-      <label>
-        Repetir senha:
-        <input type="password">
-      </label>
+      <fieldset>
+        <div class="campos">
+          <label> Nome: </label>
+          <input type="text">
+          <small></small>
+        </div>
 
-      <button>Criar conta</button>
+        <div class="campos">
+          <label> Apelido: </label>
+          <input type="text">
+          <small></small>
+        </div>
+
+        <div class="campos">
+          <label> Email: </label>
+          <input type="text">
+          <small></small>
+        </div>
+
+        <div class="campos">
+          <label> Senha: </label>
+          <input type="password">
+          <small></small>
+        </div>
+
+        <div class="campos">
+          <label> Repetir senha: </label>
+          <input type="password">
+          <small></small>
+        </div>
+      </fieldset>
+
+      <button id="botaoSignup">Criar conta</button>
 
     </form>
+    
     <div class="ingressar">
       <a href="index.html">Já possui conta? Acesse aqui</a>
     </div>
   </div>
 
+  <script src="./js/utils.js"></script>
+  <script src="./js/signup.js"></script>
 </body>
 
 </html>
