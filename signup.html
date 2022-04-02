@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/acesso.css">
+  <link rel="stylesheet" href="./styles/acesso.css">
   <title>To-Do App</title>
 </head>
 
@@ -23,32 +23,32 @@
       <fieldset>
         <div class="campos">
           <label> Nome: </label>
-          <input type="text">
-          <small></small>
+          <input type="text" name="nome" id="inputNome" required>
+          <small>Por favor, preencha o campo Nome</small>
         </div>
 
         <div class="campos">
           <label> Apelido: </label>
-          <input type="text">
-          <small></small>
+          <input type="text" name="apelido" id="inputApelido" required>
+          <small>Por favor, preencha o campo Apelido</small>
         </div>
 
         <div class="campos">
           <label> Email: </label>
-          <input type="text">
-          <small></small>
+          <input type="email"  name="email" id="inputEmail" required>
+          <small>Por favor, preencha o campo E-mail</small>
         </div>
 
         <div class="campos">
           <label> Senha: </label>
-          <input type="password">
-          <small></small>
+          <input type="password" name="senha" id="inputSenha" required minlength="3">
+          <small>Por favor, preencha o campo Senha</small>
         </div>
 
         <div class="campos">
           <label> Repetir senha: </label>
-          <input type="password">
-          <small></small>
+          <input type="password" name="confirmaSenha" id="inputConfirmaSenha" required>
+          <small>Por favor, preencha o campo Repetir Senha</small>
         </div>
       </fieldset>
 
