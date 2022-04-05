@@ -1,9 +1,10 @@
+"use strict";
 let inputNomeRef = document.querySelector('#inputNome');
-let inputApelidoRef = document.querySelector('#inputApelido');
 let inputEmailRef = document.querySelector('#inputEmail');
 let inputSenhaRef = document.querySelector('#inputSenha');
-let inputConfirmaSenhaRef = document.querySelector('#inputConfirmaSenha');
 let botaoSignupRef = document.querySelector('#botaoSignup');
+let inputApelidoRef = document.querySelector('#inputApelido');
+let inputConfirmaSenhaRef = document.querySelector('#inputConfirmaSenha');
 
 let logado = JSON.parse(localStorage.getItem('logado')); 
 // pega o item "logado" armazenado no localStorage e converte para um array e armazena na variavel logado
@@ -14,7 +15,7 @@ if (logado !== null) { // se a variavel logado não for null (exite um usuario l
 }
 
 botaoSignupRef.addEventListener('click', (e) => {
-    e.preventDefault();
+    e.preventDefault(); // não deixa o link abrir uma nova pagina
     let nome = inputNomeRef.value;
     let apelido = inputApelidoRef.value;
     let email = inputEmailRef.value;
