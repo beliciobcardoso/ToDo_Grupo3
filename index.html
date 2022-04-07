@@ -11,8 +11,7 @@
   <link rel="stylesheet" href="styles/acesso.css">
 
   <!-- ---------------------- lógica aplicada no login ----------------------- -->
-  <script src="/scripts/utils.js"></script>
-  <script src="/scripts/index.js"></script>
+
 
 </head>
 
@@ -29,16 +28,24 @@
       <h1>Acessar</h1>
 
 
-      <label>
-        Email:
-        <input id="inputEmail" type="text">
-      </label>
-      <label>
-        Senha:
-        <input id="inputPassword" type="password">
-      </label>
+      <fieldset>
+        
+        <div class="campos">
+          <label> Email: </label>
+          <input id="inputEmail" type="email" required>
+          <small>Email inválido!</small>
+        </div>
 
-      <button type="submit">Acessar</button>
+        <div class="campos">
+          <label> Senha: </label>
+          <input id="inputPassword" type="password" minlength = "8" required >
+          <small>Senha inválida! Digite no mínimo 8 caracteres</small>
+        </div>
+        
+        <button type="submit" id="buttonLogin">Acessar</button>
+        
+      </fieldset>
+
 
     </form>
     <div class="ingressar">
@@ -46,6 +53,8 @@
     </div>
   </div>
 
+  <script src="./scripts/login.js" type="module"></script>
+  <script src="./scripts/utils.js" type="module"></script>
 </body>
 
 </html>
