@@ -2,7 +2,8 @@ let nomeUsuarioRef = document.querySelector('.nomeUsuario')
 let imagemUsuarioRef = document.querySelector('.user-image')
 let tarefasPendentesRef = document.querySelector('.tarefas-pendentes')
 let botaoRef = document.querySelector('#botaoTarefa')
-
+let novaTarefaRef = document.querySelector('#novaTarefa')
+let finalizarSessaoRef = document.querySelector('#closeApp')
 
 function logOutUser() {
 
@@ -10,14 +11,16 @@ function logOutUser() {
     window.location.href = './index.html'
 }
 
-
+finalizarSessaoRef.addEventListener('click', () => {
+    logOutUser()
+})
 
 
 let requestConfiguration = {
 
     headers: { //cabeçalho da requisição
         'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('token')
+        'Authorization': localStorage.getItem('token','tarefa')
     }
 }
 
@@ -56,6 +59,45 @@ if (localStorage.getItem('token') === 'undefined') {
 
 
 
+function cadastrarTarefa(){
+
+    let task = {
+
+        description: novaTarefaRef.value, 
+        completed: false
+    }
+
+    const resquestOptions = {
+        method: 'POST',
+        body: JSON.stringify(task),
+        headers: { 
+            'Content-Type': 'application/json' ,
+            'Authorization': localStorage.getItem('token')
+        }
+    }
+
+    fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', resquestOptions)
+            .then(response => {
+                console.log(response)
+                response.json() })
+            .then(data => {
+                localStorage.setItem('task', JSON.stringify(data.jwt));
+                
+            }
+            )
+
+}
+
+
+botaoRef.addEventListener('click', event =>{
+
+    cadastrarTarefa()
+
+    alert('Tarefa Registrada com sucesso!')
+
+
+})
+
 fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', requestConfiguration).then(
 
     response => {
@@ -83,25 +125,13 @@ fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', requestConfiguration).then(
                               </li>             `
                     }
                 }
-
             )
-
         } else if (false) {
 
             console.log('falso!')
         }
     }
 )
-
-
-botaoRef.addEventListener('click', event =>{
-
-    event.preventDefault()
-
-
-
-
-})
 
 
 
