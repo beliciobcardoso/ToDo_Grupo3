@@ -1,99 +1,120 @@
-"use strict";
-const date = new Date();
-const dia = String(date.getDate()).padStart(2, '0');
-const mes = String(date.getMonth() + 1).padStart(2, '0');
-const ano = date.getFullYear();
-const dataAtual = dia + '/' + mes + '/' + ano;
-
+let skeletonRef = document.querySelector('#skeleton');
 let closeAppRef = document.querySelector('#closeApp');
 let novaTarefaRef = document.querySelector('#novaTarefa');
-let tarefasPendentesRef = document.querySelector('.tarefas-pendentes');
 let usuarioLogadoRef = document.querySelector('#usuarioLogado');
+let tarefasPendentesRef = document.querySelector('.tarefas-pendentes');
 let botaoAdicionarTarefaRef = document.querySelector('#botaoAdicionar');
-let skeletonRef = document.querySelector('#skeleton');
+let botaoRemoverTarefaRef = document.querySelector('#botaoRemover');
 
-// pega o item "logado" armazenado no localStorage e converte para um array e armazena na variavel logado
-let logado = JSON.parse(localStorage.getItem('logado'));
+let logado = localStorage.getItem('token');
 
-if (logado === null) { // se a variavel logado for null (não exite um usuario logado)  então...
-    window.location.href = 'index.html'; // redireciona para a pagina de login
-}
-// ---------------------------------------------------------------------------
-
-usuarioLogadoRef.innerHTML = logado[0]; // escreve o nome do usuario logado na pagina
-
-let donoTarefa = null;
-
-const usuarios = JSON.parse(localStorage.getItem('usuarios'));
-for (const usuario of usuarios) {
-    if (usuario.nome === logado[0]) {
-        donoTarefa = usuario.email
+let resquestOptions = {
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': logado
     }
 }
+
+fetch('https://ctd-todo-api.herokuapp.com/v1/users/getMe', resquestOptions)
+    .then(response => {
+        if (response.ok) {
+            response.json().then(data => {
+                console.log(`Minha id é ${data.id}`);
+                usuarioLogadoRef.innerHTML = `Olá ${data.firstName} ${data.lastName}`;
+            })
+        } else if (response.status === 401) {
+            alert('Usuário não autorizado');
+            logOutUser()
+        } else {
+            alert('Erro ao carregar dados');
+        }
+    })
+
+fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', resquestOptions)
+    .then(response => {
+        if (response.ok) {
+            response.json().then(
+                tasks => {    
+                    if (true) {
+                        for (const task of tasks) {
+                            console.log(task);
+                            skeletonRef.remove('skeleton');
+                            tarefasPendentesRef.innerHTML += `
+                                  <li class="tarefa">
+                                  <div class="not-done"></div>
+                                  <div class="descricao">
+                                    <p class="nome">${task.description}</p>
+                                    <p class="timestamp">Criada em: ${task.createdAt}</p>                                
+                                    <div class="control">
+                                    <button class="botao-editar" id="botaoEditar">
+                                      <img src="./assets/edit.png" alt="Editar tarefa">
+                                    </button>
+                                    <button class="botao-excluir" id="botaoExcluir">
+                                      <img src="./assets/trash.png" alt="Excluir tarefa">
+                                    </button>
+                                  </div>
+                                </li>`
+                        }
+                        
+                    }                
+                })
+        }
+    })
 
 // Adicionar tarefa
-botaoAdicionarTarefaRef.addEventListener('click', (e) => {
-    e.preventDefault(); // não deixa o link abrir uma nova pagina
-
-    let tarefaAtual = novaTarefaRef.value;
-
-    if (tarefaAtual === '') {
-        alert('Digite uma tarefa');
-    } else {
-
-        let tarefa = {
-            tarefa: tarefaAtual,
-            data: dataAtual,
-            dono: donoTarefa,
-            status: 'pendente'
+botaoAdicionarTarefaRef.addEventListener('click', () => {
+   
+    fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', {
+        method: 'POST',
+        body: JSON.stringify({
+            description: novaTarefaRef.value,
+            completed: false
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': logado
         }
+    })
+        .then(response => {
+            
+                response.json().then(tasks => {
+                    console.log(tasks);
+                    alert('Tarefa adicionada com sucesso');
+                })
+            
+        })
+})
 
-        let tarefas = JSON.parse(localStorage.getItem('tarefas'));
-
-        if (tarefas === null) {
-            tarefas = [];
-            salvar(tarefa, tarefas);
-        } else {
-            for (let tarefa of tarefas) {
-                if (tarefa.tarefa === tarefaAtual && tarefa.dono === donoTarefa) {
-                    return alert('Tarefa já cadastrada, Por favor, escolha outra tarefa');
-                }
-            }
-            salvar(tarefa, tarefas);
+// Deletar tarefa
+botaoRemoverTarefaRef.addEventListener('click', () => {
+   
+    fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', {
+        method: 'POST',
+        body: JSON.stringify({
+            description: novaTarefaRef.value,
+            completed: false
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': logado
         }
-    }
+    })
+        .then(response => {
+            
+                response.json().then(tasks => {
+                    console.log(tasks);
+                    alert('Tarefa adicionada com sucesso');
+                })
+            
+        })
 })
 
 // Fechar aplicacao
-closeAppRef.addEventListener('click', (e) => { // quando clicar no botao fechar
-    e.preventDefault(); // não deixa o link abrir uma nova pagina
-    localStorage.removeItem('logado'); // remove o item logado do localStorage
-    window.location.href = 'index.html'; // redireciona para a pagina de login
+closeAppRef.addEventListener('click', () => { // quando clicar no botao fechar 
+    logOutUser()
 })
 
-function salvar(tarefa, tarefas) {
-    tarefas.push(tarefa);
-    localStorage.setItem('tarefas', JSON.stringify(tarefas));
-    alert('Tarefa adicionada com sucesso');
-    window.location.href = 'tarefas.html';
-}
-
-
-
-let tarefas = JSON.parse(localStorage.getItem('tarefas'));
-
-for (const tarefa of tarefas) {
-
-    if (tarefa.dono === donoTarefa) {
-        skeletonRef.remove('skeleton');
-        tarefasPendentesRef.innerHTML += `
-        <li class="tarefa">
-        <div class="not-done"></div>
-        <div class="descricao">
-          <p class="nome">${tarefa.tarefa}</p>
-          <p class="timestamp">Criada em: ${tarefa.data}</p>
-        </div>
-      </li>
-        `
-    }
+function logOutUser() {
+    localStorage.clear();
+    window.location.href = './index.html'
 }
