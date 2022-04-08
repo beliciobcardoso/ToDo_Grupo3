@@ -1,5 +1,4 @@
 export default function validacao(controlesRef){
-    console.log('teste')
     for (let controleRef of controlesRef){
 
         let inputRef = controleRef.children[1]
