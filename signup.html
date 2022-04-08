@@ -23,13 +23,13 @@
       <fieldset>
         <div class="campos">
           <label> Nome: </label>
-          <input type="text" name="nome" id="inputNome" required>
+          <input type="text" name="nome" id="inputNome" minlength="5" required>
           <small>Por favor, preencha o campo Nome</small>
         </div>
 
         <div class="campos">
           <label> Sobrenome: </label>
-          <input type="text" name="sobrenome" id="inputSobrenome" required>
+          <input type="text" name="sobrenome" id="inputSobrenome" minlength="5" required>
           <small>Por favor, preencha o campo Sobrenome</small>
         </div>
 
@@ -41,7 +41,7 @@
 
         <div class="campos">
           <label> Senha: </label>
-          <input type="password" name="senha" id="inputSenha" required minlength="3">
+          <input type="password" name="senha" id="inputSenha" required minlength="6">
           <small>Por favor, preencha o campo Senha</small>
         </div>
 
@@ -61,8 +61,8 @@
     </div>
   </div>
 
-  <script src="./js/utils.js"></script>
-  <script src="./js/signup.js"></script>
+  <script src="/js/utils.js" type="module"></script>
+  <script src="./js/signup.js" type="module"></script>
 </body>
 
 </html>

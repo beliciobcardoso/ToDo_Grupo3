@@ -1,6 +1,11 @@
+import validacao from "./utils.js"
+
 let inputPasswordRef = document.querySelector('#inputPassword');
 let inputEmailRef = document.querySelector('#inputEmail');
 let botaoLoginRef = document.querySelector('#botaoLogin');
+let controlesRef = document.querySelectorAll('.campos')
+
+validacao(controlesRef)
 
 let logado = localStorage.getItem('token');
 

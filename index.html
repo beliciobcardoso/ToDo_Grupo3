@@ -21,21 +21,21 @@
       </div>
       <h1>Acessar</h1>
       <fieldset>
-        
+
         <div class="campos">
           <label> Email: </label>
-          <input id="inputEmail" type="text">
-          <small></small>
+          <input id="inputEmail" type="email" required>
+          <small>Email inválido!</small>
         </div>
 
         <div class="campos">
           <label> Senha: </label>
           <input id="inputPassword" type="password" minlength="6">
-          <small></small>
+          <small>Senha inválida! Digite no mínimo 6 caracteres</small>
         </div>
-        
+
         <button type="submit" id="botaoLogin">Acessar</button>
-        
+
       </fieldset>
     </form>
 
@@ -44,8 +44,7 @@
     </div>
   </div>
 
- <!--  <script src="/js/utils.js"></script>
-  <script src="/js/index.js" type="module"></script> -->
+  <script src="/js/utils.js" type="module"></script>
   <script src="./js/login.js" type="module"></script>
 </body>
 

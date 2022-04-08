@@ -1,9 +1,14 @@
+import validacao from "./utils.js"
+
 let inputNomeRef = document.querySelector('#inputNome');
-let inputEmailRef = document.querySelector('#inputEmail');
+let controlesRef = document.querySelectorAll('.campos');
 let inputSenhaRef = document.querySelector('#inputSenha');
+let inputEmailRef = document.querySelector('#inputEmail');
 let botaoSignupRef = document.querySelector('#botaoSignup');
 let inputSobrenomeRef = document.querySelector('#inputSobrenome');
 let inputConfirmaSenhaRef = document.querySelector('#inputConfirmaSenha');
+
+validacao(controlesRef)
 
 botaoSignupRef.addEventListener('click', (e) => {
     e.preventDefault(); // não deixa o link abrir uma nova pagina
