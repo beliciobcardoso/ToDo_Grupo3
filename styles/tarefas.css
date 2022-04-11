@@ -10,10 +10,10 @@ header {
 a {
   display: block;
   width: fit-content;
-  padding: .7em 1em;
-  border-bottom: .2em solid white;
+  padding: 0.7em 1em;
+  border-bottom: 0.2em solid white;
   text-decoration: none;
-  color: white
+  color: white;
 }
 
 .user-info {
@@ -32,13 +32,13 @@ a {
   width: 2em;
   border-radius: 50%;
   background-color: white;
-  opacity: .4;
-  margin-left: .7em;
+  opacity: 0.4;
+  margin-left: 0.7em;
 }
 
-#closeApp{
+#closeApp {
   margin-left: 15px;
-  font-size: .7em;
+  font-size: 0.7em;
   background-color: rgb(218, 88, 88);
   color: white;
   border-radius: 50vh;
@@ -57,16 +57,16 @@ a {
   margin: 0 10%;
   padding: 1em;
   box-shadow: 2px 2px 10px lightgrey;
-  border-radius: .2em;
+  border-radius: 0.2em;
   z-index: 20;
 }
 
-.nova-tarefa input[type=text] {
+.nova-tarefa input[type='text'] {
   border: none;
   flex: 1;
   border-bottom: 1px solid lightgrey;
   border-radius: 0;
-  padding: .3em;
+  padding: 0.3em;
   font-size: 1.1em;
 }
 
@@ -77,7 +77,7 @@ a {
 
 .nova-tarefa input::placeholder {
   color: rgb(197, 197, 197);
-  text-indent: .2em;
+  text-indent: 0.2em;
 }
 
 .nova-tarefa button {
@@ -86,7 +86,7 @@ a {
   background-color: transparent;
   margin-left: 2em;
   margin-right: 1em;
-  opacity: .5;
+  opacity: 0.5;
   cursor: pointer;
 }
 
@@ -145,7 +145,7 @@ a {
   content: '';
   position: absolute;
   bottom: 100%;
-  left: calc(.75em - 1px);
+  left: calc(0.75em - 1px);
   display: block;
   height: 3em;
   width: 2px;
@@ -156,7 +156,7 @@ a {
   content: '';
   position: absolute;
   top: 100%;
-  left: calc(.75em - 1px);
+  left: calc(0.75em - 1px);
   display: block;
   height: 4.5em;
   width: 2px;
@@ -167,7 +167,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex: 1;
+  width: 100%;
   background-color: white;
   padding: 1em 2em;
   box-shadow: 2px 2px 5px lightgrey;
@@ -178,8 +178,23 @@ a {
 }
 
 .tarefa .timestamp {
-  font-size: .9em;
+  font-size: 0.9em;
   color: rgb(134, 134, 134);
+}
+
+.descricao .descricaoTarefa {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.descricao .controls {
+  display: flex;
+}
+
+.descricao .controls button {
+  margin-left: 1em;
+  background-color: white;
 }
 
 /* Tarefas terminadas ----------------------------------------------------------- */
@@ -188,9 +203,9 @@ a {
   position: relative;
   width: 8em;
   text-align: center;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   background-color: white;
-  border-radius: .2em;
+  border-radius: 0.2em;
   box-shadow: 3px 3px 5px lightgrey;
   color: rgb(170, 170, 170);
   font-weight: 400;
@@ -207,11 +222,11 @@ a {
   margin: 2em 15%;
 }
 
-.tarefas-terminadas i{
+.tarefas-terminadas i {
   color: grey;
   background-color: rgb(228, 228, 228);
 }
-.tarefas-terminadas button{
+.tarefas-terminadas button {
   margin-left: 10px;
 }
 
@@ -224,21 +239,26 @@ a {
   text-decoration: line-through;
 }
 
-#skeleton .descricao{
+#skeleton .descricao {
   background-color: rgb(189, 189, 189);
 }
-#skeleton p{
+#skeleton p,
+#skeleton button {
   background-color: rgb(214, 214, 214);
   color: rgb(214, 214, 214);
 }
-#skeleton .not-done{
+#skeleton .not-done {
   background-color: rgb(189, 189, 189);
 }
 
-#skeleton{
+#skeleton {
   animation: trasparencia 1s infinite;
 }
 @keyframes trasparencia {
-  0%{ opacity: 0.5;}
-  100%{ opacity: 0.8;}
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.8;
+  }
 }
