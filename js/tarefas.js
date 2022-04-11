@@ -1,13 +1,13 @@
-let skeletonRef = document.querySelector('#skeleton');
 let closeAppRef = document.querySelector('#closeApp');
+let skeletonRef = document.querySelector('#skeleton');
 let novaTarefaRef = document.querySelector('#novaTarefa');
-let usuarioLogadoRef = document.querySelector('#usuarioLogado');
-let tarefasPendentesRef = document.querySelector('.tarefas-pendentes');
-let tarefasTerminadasRef = document.querySelector('.tarefas-terminadas');
-let botaoAdicionarTarefaRef = document.querySelector('#botaoAdicionar');
-let botaoRemoverTarefaRef = document.querySelector('#botaoExcluir');
-let botaoEditarTarefaRef = document.querySelector('#botaoEditar');
 let checkTarefaRef = document.querySelector('#checkTarefa');
+let usuarioLogadoRef = document.querySelector('#usuarioLogado');
+let botaoEditarTarefaRef = document.querySelector('#botaoEditar');
+let botaoRemoverTarefaRef = document.querySelector('#botaoExcluir');
+let tarefasPendentesRef = document.querySelector('.tarefas-pendentes');
+let botaoAdicionarTarefaRef = document.querySelector('#botaoAdicionar');
+let tarefasTerminadasRef = document.querySelector('.tarefas-terminadas');
 
 let logado = localStorage.getItem('token');
 
@@ -88,11 +88,6 @@ fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', resquestOptions).then(
                                               )}</p>                         
                                           </div>                                       
                                           <div class="controls">
-                                              <button class="btn-edit" id="botaoEditar" onclick="editar(${
-                                                task.id
-                                              })">
-                                                  <img src="./assets/edit.png" alt="Editar tarefa"/>
-                                              </button>
                                               <button class="btn-delete" id="botaoExcluir" onclick="excluir(${
                                                 task.id
                                               })">
@@ -157,23 +152,29 @@ function excluir(idExcluir) {
 
 // Editar tarefa
 function editar(idEditar) {
-  fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${idEditar}`, {
-    method: 'PUT',
-    body: JSON.stringify({
-      description: novaTarefaRef.value,
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: logado,
-    },
-  }).then((response) => {
-    if (response.ok) {
-      //alert('Tarefa editada com sucesso');
-      window.location.reload();
-    } else {
-      alert('Erro ao editar tarefa');
-    }
-  });
+  if (novaTarefaRef.value === '') {
+    alert('O campo tarefa não pode estar vazio');
+  } else if (novaTarefaRef.value.length <= 5) {
+    alert('A tarefa não pode ter menos de 5 caracteres');
+  } else {
+    fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${idEditar}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        description: novaTarefaRef.value,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: logado,
+      },
+    }).then((response) => {
+      if (response.ok) {
+        //alert('Tarefa editada com sucesso');
+        window.location.reload();
+      } else {
+        alert('Erro ao editar tarefa');
+      }
+    });
+  }
 }
 
 // Fechar aplicacao
@@ -184,18 +185,6 @@ closeAppRef.addEventListener('click', () => {
 function logOutUser() {
   localStorage.clear();
   window.location.href = './index.html';
-}
-
-function date(data) {
-  let dia = data.getDate() < 10 ? '0' + data.getDate() : data.getDate();
-  let mes = String(data.getMonth() + 1).padStart(2, '0');
-  let ano = data.getFullYear();
-  let hora = data.getHours();
-  let minuto = data.getMinutes();
-  let segundo = data.getSeconds();
-  let dataFormatada = `${dia}/${mes}/${ano} - ${hora}:${minuto}:${segundo}`;
-  return dataFormatada;
-  //console.log(dataFormatada);
 }
 
 function done(idDone) {
@@ -234,4 +223,16 @@ function not_done(idDone) {
       alert('Erro ao editar tarefa');
     }
   });
+}
+
+function date(data) {
+  let dia = data.getDate() < 10 ? '0' + data.getDate() : data.getDate();
+  let mes = String(data.getMonth() + 1).padStart(2, '0');
+  let ano = data.getFullYear();
+  let hora = data.getHours();
+  let minuto = data.getMinutes();
+  let segundo = data.getSeconds();
+  let dataFormatada = `${dia}/${mes}/${ano} - ${hora}:${minuto}:${segundo}`;
+  return dataFormatada;
+  //console.log(dataFormatada);
 }
