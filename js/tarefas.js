@@ -123,13 +123,29 @@ function excluir(idExcluir) {
 
 // Editar tarefa
 function editar(idEditar) {
+  fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${idEditar}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      description: novaTarefaRef.value,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: logado,
+    },
+  }).then((response) => {
+    if (response.ok) {
+      //alert('Tarefa editada com sucesso');
+      window.location.reload();
+    } else {
+      alert('Erro ao editar tarefa');
+    }
+  });
   console.log(idEditar);
   console.log('editar');
 }
 
 // Fechar aplicacao
 closeAppRef.addEventListener('click', () => {
-  // quando clicar no botao fechar aplicacao
   logOutUser();
 });
 
