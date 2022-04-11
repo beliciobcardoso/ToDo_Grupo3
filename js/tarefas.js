@@ -3,6 +3,7 @@ let closeAppRef = document.querySelector('#closeApp');
 let novaTarefaRef = document.querySelector('#novaTarefa');
 let usuarioLogadoRef = document.querySelector('#usuarioLogado');
 let tarefasPendentesRef = document.querySelector('.tarefas-pendentes');
+let tarefasTerminadasRef = document.querySelector('.tarefas-terminadas');
 let botaoAdicionarTarefaRef = document.querySelector('#botaoAdicionar');
 let botaoRemoverTarefaRef = document.querySelector('#botaoExcluir');
 let botaoEditarTarefaRef = document.querySelector('#botaoEditar');
@@ -41,10 +42,13 @@ fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', resquestOptions).then(
         for (const task of tasks) {
           let data = new Date(task.createdAt);
 
-          skeletonRef.remove('skeleton');
-          tarefasPendentesRef.innerHTML += `
+          if (task.completed === false) {
+            skeletonRef.remove('skeleton');
+            tarefasPendentesRef.innerHTML += `
                                   <li class="tarefa">
-                                    <div class="not-done"></div>
+                                    <div class="not-done" onclick="done(${
+                                      task.id
+                                    })" ></div>
                                     <div class="descricao"> 
                                         <div class="descricaoTarefa">
                                             <p class="nome">${
@@ -68,6 +72,36 @@ fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', resquestOptions).then(
                                         </div>
                                     </div>
                                 </li>`;
+          } else {
+            tarefasTerminadasRef.innerHTML += `
+                                    <li class="tarefa">
+                                      <div class="not-done" onclick="not_done(${
+                                        task.id
+                                      })" ></div>
+                                      <div class="descricao"> 
+                                          <div class="descricaoTarefa">
+                                              <p class="nome">${
+                                                task.description
+                                              }</p>
+                                              <p class="timestamp">Criada em: ${date(
+                                                data
+                                              )}</p>                         
+                                          </div>                                       
+                                          <div class="controls">
+                                              <button class="btn-edit" id="botaoEditar" onclick="editar(${
+                                                task.id
+                                              })">
+                                                  <img src="./assets/edit.png" alt="Editar tarefa"/>
+                                              </button>
+                                              <button class="btn-delete" id="botaoExcluir" onclick="excluir(${
+                                                task.id
+                                              })">
+                                                  <img src="./assets/trash.png" alt="Excluir tarefa"/>
+                                              </button>
+                                          </div>
+                                      </div>
+                                  </li>`;
+          }
         }
       });
     }
@@ -140,8 +174,6 @@ function editar(idEditar) {
       alert('Erro ao editar tarefa');
     }
   });
-  console.log(idEditar);
-  console.log('editar');
 }
 
 // Fechar aplicacao
@@ -164,4 +196,42 @@ function date(data) {
   let dataFormatada = `${dia}/${mes}/${ano} - ${hora}:${minuto}:${segundo}`;
   return dataFormatada;
   //console.log(dataFormatada);
+}
+
+function done(idDone) {
+  fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${idDone}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      completed: true,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: logado,
+    },
+  }).then((response) => {
+    if (response.ok) {
+      window.location.reload();
+    } else {
+      alert('Erro ao editar tarefa');
+    }
+  });
+}
+
+function not_done(idDone) {
+  fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${idDone}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      completed: false,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: logado,
+    },
+  }).then((response) => {
+    if (response.ok) {
+      window.location.reload();
+    } else {
+      alert('Erro ao editar tarefa');
+    }
+  });
 }
