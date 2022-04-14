@@ -101,7 +101,6 @@ function cadastrarTarefa() {
                     response.json().then(
 
                         task => {
-                                console.log (task)
                                 tarefasPendentesRef.innerHTML += `
                                     <li class="tarefa">
                                         <div class="not-done" onclick="mudarParaTarefaFeita(${task.id})"></div>
@@ -119,10 +118,10 @@ function cadastrarTarefa() {
 }
 
 botaoRef.addEventListener('click', event => {
-    cadastrarTarefa()
+   
     event.preventDefault()
-    
 
+    cadastrarTarefa()
 })
 
 
@@ -143,27 +142,7 @@ function mudarParaTarefaFeita(id) {
     fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`, resquestOptions)
         .then(response => {
             if (response.ok) {
-                response.json().then(
-                    task => {
-                        console.log(task)
-                        tarefasPendentesRef.innerHTML -= `
-                                    <li class="tarefa">
-                                        <div class="not-done" onclick="mudarParaTarefaFeita(${task.id})"></div>
-                                        <div class="descricao">
-                                            <p class="nome">${task.description}</p>
-                                            <p class="timestamp">Criada em: ${task.createdAt}</p>
-                                        </div>
-                                    </li>`
-                        tarefasTerminadasRef.innerHTML += `
-                                    <li class="tarefa">
-                                        <div class="not-done" onclick="mudarParaTarefaNaoFeita((${task.id})"></div>
-                                        <div class="descricao">
-                                            <p class="nome">${task.description}</p>
-                                            <p class="timestamp">Criada em: ${task.createdAt}</p>
-                                        </div>
-                                    </li>`
-                    }
-                )
+                getTasks()
             } else {
                 alert('Erro!')
             }
@@ -185,33 +164,14 @@ function mudarParaTarefaNaoFeita(id) {
     fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`, resquestOptions)
         .then(response => {
             if (response.ok) {
-                response.json().then(
-                    task => {
-                        console.log(task)
-                        tarefasPendentesRef.innerHTML += `
-                                    <li class="tarefa">
-                                        <div class="not-done" onclick="mudarParaTarefaFeita(${task.id})"></div>
-                                        <div class="descricao">
-                                            <p class="nome">${task.description}</p>
-                                            <p class="timestamp">Criada em: ${task.createdAt}</p>
-                                        </div>
-                                    </li>`
-                        tarefasTerminadasRef.innerHTML -= `
-                                    <li class="tarefa">
-                                        <div class="not-done" onclick="mudarParaTarefaNaoFeita((${task.id})"></div>
-                                        <div class="descricao">
-                                            <p class="nome">${task.description}</p>
-                                            <p class="timestamp">Criada em: ${task.createdAt}</p>
-                                        </div>
-                                    </li>`
-                    }
-                )
+                getTasks()
             } else {
                 alert('Erro!')
             }
         })
 }
 
+function getTasks(){
 fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', requestConfiguration).then(
 
     response => {
@@ -221,11 +181,13 @@ fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', requestConfiguration).then(
             response.json().then(
 
                 tasks => {
-
+                    skeletonRef.remove('skeleton');
+                    tarefasPendentesRef.innerHTML =''
+                    tarefasTerminadasRef.innerHTML =''
                     for (let task of tasks) {
 
                         if (task.completed === false) {
-                            skeletonRef.remove('skeleton');
+                            
                             tarefasPendentesRef.innerHTML += `
                                     <li class="tarefa">
                                         <div class="not-done" onclick="mudarParaTarefaFeita(${task.id})"></div>
@@ -234,11 +196,11 @@ fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', requestConfiguration).then(
                                             <p class="timestamp">Criada em: ${task.createdAt}</p>
                                         </div>
                                     </li>`
-                        } else if (task.completed === true) {
-                            skeletonRef.remove('skeleton');
+                        } else {
+                            
                             tarefasTerminadasRef.innerHTML += `
                                     <li class="tarefa">
-                                        <div class="not-done" onclick="mudarParaTarefaNaoFeita((${task.id})"></div>
+                                        <div class="not-done" onclick="mudarParaTarefaNaoFeita(${task.id})"></div>
                                         <div class="descricao">
                                             <p class="nome">${task.description}</p>
                                             <p class="timestamp">Criada em: ${task.createdAt}</p>
@@ -251,7 +213,7 @@ fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', requestConfiguration).then(
         }
     }
 )
-
+}
 
 // DELETAR TODAS AS TAREFAS
 
@@ -290,6 +252,9 @@ limparTarefaRef.addEventListener('click', () => {
 
 })
 
+window.addEventListener('load', () =>{
+    getTasks()
+})
 
 
 
