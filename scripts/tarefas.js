@@ -141,14 +141,13 @@ function getTasks() {
   ).then((response) => {
     if (response.ok) {
       response.json().then((tasks) => {
-        console.log(tasks);
-
         if (tasks.length === 0) {
           skeletonRef.style.display = 'block';
         } else {
           skeletonRef.style.display = 'none';
           tarefasPendentesRef.innerHTML = '';
           tarefasTerminadasRef.innerHTML = '';
+          novaTarefaRef.value = '';
 
           for (let task of tasks) {
             if (task.completed === false) {
