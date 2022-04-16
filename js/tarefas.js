@@ -123,10 +123,32 @@ botaoAdicionarTarefaRef.addEventListener('click', (e) => {
         Authorization: logado,
       },
     }).then((response) => {
-      response.json().then((tasks) => {
-        console.log(tasks);
-        //alert('Tarefa adicionada com sucesso');
-        window.location.reload();
+      response.json().then((task) => {
+        let data = new Date(task.createdAt);
+        tarefasPendentesRef.innerHTML += `
+        <li class="tarefa">
+          <div class="not-done" onclick="done(${task.id})" ></div>
+          <div class="descricao"> 
+              <div class="descricaoTarefa">
+                  <p class="nome">${task.description}</p>
+                  <p class="timestamp">Criada em: ${date(
+                    data
+                  )}</p>                         
+              </div>                                       
+              <div class="controls">
+                  <button class="btn-edit" id="botaoEditar" onclick="editar(${
+                    task.id
+                  })">
+                      <img src="./assets/edit.png" alt="Editar tarefa"/>
+                  </button>
+                  <button class="btn-delete" id="botaoExcluir" onclick="excluir(${
+                    task.id
+                  })">
+                      <img src="./assets/trash.png" alt="Excluir tarefa"/>
+                  </button>
+              </div>
+          </div>
+      </li>`;
       });
     });
   }
@@ -198,11 +220,33 @@ function done(idDone) {
       Authorization: logado,
     },
   }).then((response) => {
-    if (response.ok) {
-      window.location.reload();
-    } else {
-      alert('Erro ao editar tarefa');
-    }
+    response.json().then((task) => {
+      let data = new Date(task.createdAt);
+      tarefasTerminadasRef.innerHTML += `
+      <li class="tarefa">
+        <div class="not-done" onclick="done(${task.id})" ></div>
+        <div class="descricao"> 
+            <div class="descricaoTarefa">
+                <p class="nome">${task.description}</p>
+                <p class="timestamp">Criada em: ${date(
+                  data
+                )}</p>                         
+            </div>                                       
+            <div class="controls">
+                <button class="btn-edit" id="botaoEditar" onclick="editar(${
+                  task.id
+                })">
+                    <img src="./assets/edit.png" alt="Editar tarefa"/>
+                </button>
+                <button class="btn-delete" id="botaoExcluir" onclick="excluir(${
+                  task.id
+                })">
+                    <img src="./assets/trash.png" alt="Excluir tarefa"/>
+                </button>
+            </div>
+        </div>
+    </li>`;
+    });
   });
 }
 
@@ -217,11 +261,33 @@ function not_done(idDone) {
       Authorization: logado,
     },
   }).then((response) => {
-    if (response.ok) {
-      window.location.reload();
-    } else {
-      alert('Erro ao editar tarefa');
-    }
+    response.json().then((task) => {
+      let data = new Date(task.createdAt);
+      tarefasPendentesRef.innerHTML += `
+      <li class="tarefa">
+        <div class="not-done" onclick="done(${task.id})" ></div>
+        <div class="descricao"> 
+            <div class="descricaoTarefa">
+                <p class="nome">${task.description}</p>
+                <p class="timestamp">Criada em: ${date(
+                  data
+                )}</p>                         
+            </div>                                       
+            <div class="controls">
+                <button class="btn-edit" id="botaoEditar" onclick="editar(${
+                  task.id
+                })">
+                    <img src="./assets/edit.png" alt="Editar tarefa"/>
+                </button>
+                <button class="btn-delete" id="botaoExcluir" onclick="excluir(${
+                  task.id
+                })">
+                    <img src="./assets/trash.png" alt="Excluir tarefa"/>
+                </button>
+            </div>
+        </div>
+    </li>`;
+    });
   });
 }
 
