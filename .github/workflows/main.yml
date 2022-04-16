@@ -24,12 +24,11 @@ jobs:
       # Faz o check-out do seu repositório em $GITHUB_WORKSPACE, para que seu jobs possa acessá-lo
       - uses: actions/checkout@v3
 
+      - nome: Markdown para HTML
+        uses: lifepal/markdown-to-html@v1.2
       # Executa um único comando usando o shell runners
       - name: Run a one-line script
         run: echo Hello, world!
-
-      - nome: Markdown para HTML
-        uses: lifepal/markdown-to-html@v1.2
 
       # Executa um conjunto de comandos usando o shell runners
       - name: Run a multi-line script
