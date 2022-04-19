@@ -89,3 +89,23 @@ button {
   align-items: center;
   justify-content: center;
 }
+
+fieldset{
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.campos small {
+  color: red;
+  display: none;
+  font-size: 12px;
+}
+
+.campos.camposErro input {
+  border-color: red;
+}
+
+.campos.camposErro small {
+  display: block;
+}

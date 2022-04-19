@@ -15,11 +15,11 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- ----------------------------- sweet alert ----------------------------- -->
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- CDN example (unpkg) -->
-  <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+  <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!CDN example (unpkg) -->
+  <!-- <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script> -->
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
 
 
   <title>To-Do App</title>
@@ -32,18 +32,17 @@
     </nav>
 
     <div class="user-info">
-      <p>Nome usuário</p>
+      <p class="nomeUsuario">Nome usuário</p>
       <div class="user-image"></div>
-      <p id="closeApp">Finalizar sessão</i>
-      </p>
+      <a href="index.html"><p id="closeApp">Finalizar sessão</i></p></a>
     </div>
   </header>
 
 
   <form class="nova-tarefa">
-    <div class="not-done "></div>
-    <input id="novaTarea" type="text" placeholder="Nova tarefa">
-    <button type="submit">
+    <div class="not-done" id="limparTarefa"></div>
+    <input id="novaTarefa" type="text" placeholder="Nova tarefa">
+    <button type="submit" id = "botaoTarefa">
       <img src="./assets/plus.png" alt="Adicionar uma nova tarefa">
     </button>
   </form>
@@ -78,9 +77,32 @@
 
   <h2 class="titulo-terminadas">Tarefas terminadas</h2>
   <ul class="tarefas-terminadas">
+    <div id="skeleton">
+      <li class="tarefa">
+        <div class="not-done"></div>
+        <div class="descricao">
+          <p class="nome">Nova tarefa</p>
+          <p class="timestamp">Criada em: 15/07/21</p>
+        </div>
+      </li>
+      <li class="tarefa">
+        <div class="not-done"></div>
+        <div class="descricao">
+          <p class="nome">Nova tarefa</p>
+          <p class="timestamp">Criada em: 15/07/21</p>
+        </div>
+      </li>
+      <li class="tarefa">
+        <div class="not-done"></div>
+        <div class="descricao">
+          <p class="nome">Nova tarefa</p>
+          <p class="timestamp">Criada em: 15/07/21</p>
+        </div>
+      </li>
 
+    </div>
   </ul>
-
+<script src="scripts/tarefas.js"></script>
 </body>
 
 </html>
