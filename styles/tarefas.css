@@ -172,10 +172,11 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex: 1;
   background-color: white;
+  width: 100%;
   padding: 1em 2em;
   box-shadow: 2px 2px 5px lightgrey;
+
 }
 
 .tarefa .nome {
@@ -186,6 +187,23 @@ a {
   font-size: 0.9em;
   color: rgb(134, 134, 134);
 }
+
+.descricao .descricaoTarefa {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.descricao .controls {
+  display: flex;
+}
+
+.descricao .controls button {
+  margin-left: 1em;
+  background-color: white;
+}
+
+
 
 /* Tarefas terminadas ----------------------------------------------------------- */
 
