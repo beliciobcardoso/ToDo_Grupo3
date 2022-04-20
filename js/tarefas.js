@@ -165,7 +165,7 @@ function excluir(idExcluir) {
   }).then((response) => {
     if (response.ok) {
       //alert('Tarefa deletada com sucesso');
-      window.location.reload();
+      location.reload();
     } else {
       alert('Erro ao deletar tarefa');
     }
