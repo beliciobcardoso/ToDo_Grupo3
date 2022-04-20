@@ -8,7 +8,7 @@ let tarefasTerminadasRef = document.querySelector('.tarefas-terminadas');
 let limparTarefaRef = document.querySelector('#limparTarefa');
 let skeletonRef = document.querySelector('#skeleton');
 
-// VERIFICAR LOGIN
+// VERIFICAR LOGIN E FAZER LOGOUT
 let logado = localStorage.getItem('token');
 
 function logOutUser() {
@@ -17,7 +17,22 @@ function logOutUser() {
 }
 
 finalizarSessaoRef.addEventListener('click', () => {
-  logOutUser();
+
+  Swal.fire({
+    title: 'Tem certeza que quer finalizar a sessão?',
+    text: "Você poderá voltar mais tarde.",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sim, quero finalizar!'
+  }).then((result => {
+    if (result.isConfirmed) {
+
+      logOutUser()
+    }
+  }))
+
 });
 
 let requestConfiguration = {
@@ -47,6 +62,9 @@ if (logado === 'undefined') {
     }
   });
 }
+
+
+
 
 //CADASTRAR TAREFA
 
@@ -81,7 +99,7 @@ function cadastrarTarefa() {
     fetch('https://ctd-todo-api.herokuapp.com/v1/tasks', resquestOptions).then(
       (response) => {
         if (response.ok) {
-          response.json().then((task) => {
+          //response.json().then((task) => {
 
             Swal.fire(
               'Criada!',
@@ -89,7 +107,7 @@ function cadastrarTarefa() {
               'success'
             )
             getTasks();
-          });
+          //});
         }
       }
     );
@@ -101,6 +119,10 @@ botaoRef.addEventListener('click', (event) => {
 
   cadastrarTarefa();
 });
+
+
+
+//ALTERAR TAREFA ENTRE TERMINADA E PENDENTE
 
 function mudarParaTarefaFeita(id) {
   const resquestOptions = {
@@ -158,40 +180,50 @@ function mudarParaTarefaNaoFeita(id) {
     } else {
       Swal.fire(
         'Erro!',
+        '',
         'error'
       );
     }
   });
 }
 
+
+//FUNÇÃO PEGAR TAREFAS JÁ CADASTRADAS
+
+
 function getTasks() {
-  
+
   fetch(
     'https://ctd-todo-api.herokuapp.com/v1/tasks',
     requestConfiguration
   ).then((response) => {
     if (response.ok) {
       response.json().then((tasks) => {
+    
+        let data
+
         if (tasks.length === 0) {
           skeletonRef.style.display = 'block';
+          
         } else {
           skeletonRef.style.display = 'none';
           tarefasPendentesRef.innerHTML = '';
           tarefasTerminadasRef.innerHTML = '';
           novaTarefaRef.value = '';
-          console.log('dentro da gettask')
+
           for (let task of tasks) {
+            data = new Date(task.createdAt);
             if (task.completed === false) {
               tarefasPendentesRef.innerHTML += `
-                                        <li class="tarefa" "data-aos-"fade-down-right">
+                                        <li class="tarefa" data-aos="fade-down-right" data-aos-duration="800">
                                             <div class="not-done" onclick="mudarParaTarefaFeita(${task.id})"></div>
                                             <div class="descricao">
                                                 <div class="descricaoTarefa">
                                                     <p class="nome">${task.description}</p>
-                                                    <p class="timestamp">Criada em: ${task.createdAt}</p>
+                                                    <p class="timestamp">Criada em: ${date(data)}</p>
                                                 </div>
                                                 <div class="controls">
-                                                    <button class="btn-edit" id="botaoEditar" onclick="editar(${task.id})">
+                                                    <button class="btn-edit" id="botaoEditar" onclick="editarTarefa(${task.id})">
                                                         <img src="./assets/edit.png" alt="Editar tarefa"/>
                                                     </button>
                                                 </div>
@@ -199,15 +231,15 @@ function getTasks() {
                                         </li>`;
             } else {
               tarefasTerminadasRef.innerHTML += `
-                                        <li class="tarefa" "data-aos-"fade-down-right">                                         
+                                        <li class="tarefa" data-aos="fade-down-right" data-aos-duration="800">                                         
                                             <div class="not-done" onclick="mudarParaTarefaNaoFeita(${task.id})"></div>
                                             <div class="descricao">
                                               <div class="descricaoTarefa">
                                                   <p class="nome">${task.description}</p>
-                                                  <p class="timestamp">Criada em: ${task.createdAt}</p>
+                                                  <p class="timestamp">Criada em: ${date(data)}</p>
                                               </div>
                                               <div class="controls">
-                                                <button class="btn-edit" id="botaoEditar" onclick="editar(${task.id})">
+                                                <button class="btn-edit" id="botaoEditar" onclick="editarTarefa(${task.id})">
                                                     <img src="./assets/edit.png" alt="Editar tarefa"/>
                                                 </button>
                                                 <button class="btn-delete" id="botaoExcluir" onclick="deletarTarefa(${task.id})">
@@ -225,7 +257,7 @@ function getTasks() {
 }
 
 
-// DELETAR TODAS AS TAREFAS
+// DELETAR - TODAS AS TAREFAS E TAREFAS DE FORMA INDIVIDUAL
 
 let requestDeleteAuthorizateConfiguration = {
 
@@ -236,9 +268,30 @@ let requestDeleteAuthorizateConfiguration = {
   },
 }
 
+
 function deletar(id) {
   fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`, requestDeleteAuthorizateConfiguration)
+  .then((response) => {
+      if(response.ok){
+        Swal.fire(
+          'Sua Tarefa foi Deletada!',
+          'A tarefa foi excluída com sucesso',
+          'success'
+        )
+        
+        getTasks()
+        
+      } else {
+        Swal.fire(
+          'Erro ao deletar Tarefa!',
+          'Aconteceu um erro, tente novamente.',
+          'error'
+        );
+
+      }
+  })
 }
+
 
 limparTarefaRef.addEventListener('click', () => {
 
@@ -251,21 +304,24 @@ limparTarefaRef.addEventListener('click', () => {
     cancelButtonColor: '#d33',
     confirmButtonText: 'Sim, pode deletar tudo!'
   }).then((result => {
-    if (result.isConfirmed)  {
-                  fetch(
-                    'https://ctd-todo-api.herokuapp.com/v1/tasks',
-                    requestConfiguration
-                  ).then((response) => {
-                    if (response.ok) {
-                      response.json().then((tasks) => {
-                        for (let task of tasks) {
-                          deletar(task.id);
-                        }
-                      });
-                      getTasks()
-                    }
-                  });
-      }}));
+    if (result.isConfirmed) {
+      fetch(
+        'https://ctd-todo-api.herokuapp.com/v1/tasks',
+        requestConfiguration
+      ).then((response) => {
+        if (response.ok) {
+          response.json().then((tasks) => {
+            for (let task of tasks) {
+              deletar(task.id);
+              
+            }
+            getTasks()
+          });
+          
+        }
+      });
+    }
+  }));
 })
 
 
@@ -278,57 +334,100 @@ function deletarTarefa(id) {
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'Sim, pode deletar!'
+    confirmButtonText: 'Sim, pode deletar!',
+    cancelButtonText: 'Cancelar'
   }).then((result => {
-    if (result.isConfirmed) {                               //se conformar, algo será executado
-
-      fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`, requestDeleteAuthorizateConfiguration)
-
-        .then(response => {
-          getTasks()
-          if (response.ok) {
-            Swal.fire(
-              'Deletado!',
-              'Sua tarefa foi deletada.',
-              'success',               
-            )
-            
-          }
+    if (result.isConfirmed) {                             
+      
+      deletar(id)
+      
         }
-        )
-    }
-  }))
+        
+      }
+    
+  ))
 }
 
 //EDITAR TAREFAS
 
-function editar(id) {
-  if (novaTarefaRef.value === '') {
-    alert('O campo tarefa não pode estar vazio');
-  } else if (novaTarefaRef.value.length <= 5) {
-    alert('A tarefa não pode ter menos de 5 caracteres');
-  } else {
-    fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        description: novaTarefaRef.value,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: logado,
-      },
-    }).then((response) => {
-      if (response.ok) {
-        //alert('Tarefa editada com sucesso');
-        getTasks()
+function editarTarefa(id) {
+
+  const { value } = Swal.fire({
+    title: 'Escreva a nova tarefa',
+    input: 'text',
+    inputValue: '',
+    icon: 'info',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Pronto, está editado!',
+    inputValidator: (value) => {
+      if (!value) {
+        Swal.fire(
+          'Digite uma tarefa!',
+          'Por favor, digite a tarefa que deseja!',
+          'warning'
+        )
+      } else if (value.length <= 5) {
+        Swal.fire(
+          'Digite uma tarefa maior!',
+          'Por favor, digite uma tarefa com no mínimo 5 dígitos.',
+          'warning'
+        )
       } else {
-        alert('Erro ao editar tarefa');
+        Swal.fire(
+          'Sua Tarefa foi Editada!',
+          '',
+          'success'
+        )
+        fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            description: value
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: logado,
+          },
+        }).then((response) => {
+          if (response.ok) {
+            //alert('Tarefa editada com sucesso');
+            getTasks()
+          } else {
+            Swal.fire(
+              'Erro ao editar Tarefa!',
+              '',
+              'error'
+            )
+          }
+        });
+
       }
-    });
-  }
+    }
+  })
 }
 
+
+
+// FUNÇÃO PARA FORMATAR DATA DA PUBLICAÇÃO DA TAREFA
+
+function date(data) {
+  let dia = data.getDate() < 10 ? '0' + data.getDate() : data.getDate();
+  let mes = String(data.getMonth() + 1).padStart(2, '0');
+  let ano = data.getFullYear();
+  let hora = data.getHours();
+  let minuto = data.getMinutes();
+  let segundo = data.getSeconds();
+  let dataFormatada = `${dia}/${mes}/${ano} - ${hora}:${minuto}:${segundo}`;
+  return dataFormatada;
+}
+
+
+
+// EXIBIR TAREFAS REGISTRADAS NA TELA AO CARREGAR A PÁGINA
 
 window.addEventListener('load', () => {
   getTasks();
 });
+
+

@@ -269,3 +269,19 @@ a {
     opacity: 0.8;
   }
 }
+
+#limparTarefa:hover{
+  transition: 1s;
+  background-color: red;
+  border-style: dashed;
+  border-width: 6px;
+  border-color: gray
+}
+
+#limparTarefa{
+  
+  border-style: dashed;
+  border-width: 3px;
+  border-color: blue;
+}
+
