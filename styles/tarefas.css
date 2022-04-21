@@ -274,7 +274,6 @@ a {
   transition: 1s;
   background-color: red;
   border-style: dashed;
-  border-width: 6px;
   border-color: gray
 }
 

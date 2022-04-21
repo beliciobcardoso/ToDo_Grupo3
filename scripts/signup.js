@@ -48,10 +48,10 @@ buttonSignUpRef.addEventListener('click', event => {
 
         cadastrarUsuario()
 
-    } else if (senha != confirmarSenha || (senha.length <=8) ){
-        alert('A senha não confere!')
-    } else {
+    } else if ( (senha == '') || (nome == '') || (sobrenome == '') || (email == '')){
         alert('Preencha todos os campos!')
+    } else if (senha != confirmarSenha || (senha.length <=8) ){
+        alert('A senha não confere!') 
     }
 
 })
