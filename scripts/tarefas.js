@@ -6,6 +6,7 @@ let novaTarefaRef = document.querySelector('#novaTarefa');
 let finalizarSessaoRef = document.querySelector('#closeApp');
 let tarefasTerminadasRef = document.querySelector('.tarefas-terminadas');
 let limparTarefaRef = document.querySelector('#limparTarefa');
+let textoRef = document.querySelector('#texto');
 //let skeletonRef = document.querySelector('#skeleton');
 
 // VERIFICAR LOGIN E FAZER LOGOUT
@@ -306,6 +307,14 @@ function deletar(id) {
         );
       }
     })
+}
+
+limparTarefaRef.onmouseover = function () {
+  textoRef.innerHTML = 'Click aqui para limpar todas as tarefas !!';
+}
+
+limparTarefaRef.onmouseleave = function () {
+  textoRef.innerHTML = '';
 }
 
 limparTarefaRef.addEventListener('click', () => {

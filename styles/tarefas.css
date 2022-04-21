@@ -176,7 +176,6 @@ a {
   width: 100%;
   padding: 1em 2em;
   box-shadow: 2px 2px 5px lightgrey;
-
 }
 
 .tarefa .nome {
@@ -202,8 +201,6 @@ a {
   margin-left: 1em;
   background-color: white;
 }
-
-
 
 /* Tarefas terminadas ----------------------------------------------------------- */
 
@@ -270,17 +267,22 @@ a {
   }
 }
 
-#limparTarefa:hover{
-  transition: 1s;
-  background-color: red;
-  border-style: dashed;
-  border-color: gray
-}
-
-#limparTarefa{
-  
+#limparTarefa {
   border-style: dashed;
   border-width: 3px;
   border-color: blue;
 }
 
+#limparTarefa:hover {
+  transition: 1s;
+  background-color: red;
+  border-color: gray;
+  content: counter('teste');
+}
+
+#texto {
+  position: absolute;
+  top: -25px;
+  z-index: 10;
+  font-weight: 900;
+}
