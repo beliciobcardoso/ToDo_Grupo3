@@ -6,7 +6,7 @@ let novaTarefaRef = document.querySelector('#novaTarefa');
 let finalizarSessaoRef = document.querySelector('#closeApp');
 let tarefasTerminadasRef = document.querySelector('.tarefas-terminadas');
 let limparTarefaRef = document.querySelector('#limparTarefa');
-let skeletonRef = document.querySelector('#skeleton');
+//let skeletonRef = document.querySelector('#skeleton');
 
 // VERIFICAR LOGIN E FAZER LOGOUT
 let logado = localStorage.getItem('token');
@@ -63,9 +63,6 @@ if (logado === 'undefined') {
   });
 }
 
-
-
-
 //CADASTRAR TAREFA
 
 function cadastrarTarefa() {
@@ -101,12 +98,12 @@ function cadastrarTarefa() {
         if (response.ok) {
           //response.json().then((task) => {
 
-            Swal.fire(
-              'Criada!',
-              'Sua tarefa foi criada.',
-              'success'
-            )
-            getTasks();
+          Swal.fire(
+            'Criada!',
+            'Sua tarefa foi criada.',
+            'success'
+          )
+          getTasks();
           //});
         }
       }
@@ -187,9 +184,34 @@ function mudarParaTarefaNaoFeita(id) {
   });
 }
 
+const templateTarefas = `
+          <div id="skeleton">
+          <li class="tarefa">
+            <div class="not-done"></div>
+            <div class="descricao">
+              <p class="nome">Nova tarefa</p>
+              <p class="timestamp">Criada em: 15/07/21</p>
+            </div>
+          </li>
+          <li class="tarefa">
+            <div class="not-done"></div>
+            <div class="descricao">
+              <p class="nome">Nova tarefa</p>
+              <p class="timestamp">Criada em: 15/07/21</p>
+            </div>
+          </li>
+          <li class="tarefa">
+            <div class="not-done"></div>
+            <div class="descricao">
+              <p class="nome">Nova tarefa</p>
+              <p class="timestamp">Criada em: 15/07/21</p>
+            </div>
+          </li>
+    
+        </div>
+          `
 
 //FUNÇÃO PEGAR TAREFAS JÁ CADASTRADAS
-
 
 function getTasks() {
 
@@ -199,14 +221,13 @@ function getTasks() {
   ).then((response) => {
     if (response.ok) {
       response.json().then((tasks) => {
-    
+
         let data
 
         if (tasks.length === 0) {
-          skeletonRef.style.display = 'block';
-          
+          tarefasPendentesRef.innerHTML = templateTarefas;
+          tarefasTerminadasRef.innerHTML = templateTarefas;
         } else {
-          skeletonRef.style.display = 'none';
           tarefasPendentesRef.innerHTML = '';
           tarefasTerminadasRef.innerHTML = '';
           novaTarefaRef.value = '';
@@ -256,7 +277,6 @@ function getTasks() {
   });
 }
 
-
 // DELETAR - TODAS AS TAREFAS E TAREFAS DE FORMA INDIVIDUAL
 
 let requestDeleteAuthorizateConfiguration = {
@@ -268,30 +288,25 @@ let requestDeleteAuthorizateConfiguration = {
   },
 }
 
-
 function deletar(id) {
   fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`, requestDeleteAuthorizateConfiguration)
-  .then((response) => {
-      if(response.ok){
+    .then((response) => {
+      if (response.ok) {
         Swal.fire(
           'Sua Tarefa foi Deletada!',
           'A tarefa foi excluída com sucesso',
           'success'
         )
-        
         getTasks()
-        
       } else {
         Swal.fire(
           'Erro ao deletar Tarefa!',
           'Aconteceu um erro, tente novamente.',
           'error'
         );
-
       }
-  })
+    })
 }
-
 
 limparTarefaRef.addEventListener('click', () => {
 
@@ -313,11 +328,10 @@ limparTarefaRef.addEventListener('click', () => {
           response.json().then((tasks) => {
             for (let task of tasks) {
               deletar(task.id);
-              
             }
-            getTasks()
+
           });
-          
+
         }
       });
     }
@@ -337,14 +351,12 @@ function deletarTarefa(id) {
     confirmButtonText: 'Sim, pode deletar!',
     cancelButtonText: 'Cancelar'
   }).then((result => {
-    if (result.isConfirmed) {                             
-      
+    if (result.isConfirmed) {
       deletar(id)
-      
-        }
-        
-      }
-    
+    }
+
+  }
+
   ))
 }
 
@@ -391,7 +403,6 @@ function editarTarefa(id) {
           },
         }).then((response) => {
           if (response.ok) {
-            //alert('Tarefa editada com sucesso');
             getTasks()
           } else {
             Swal.fire(
@@ -407,8 +418,6 @@ function editarTarefa(id) {
   })
 }
 
-
-
 // FUNÇÃO PARA FORMATAR DATA DA PUBLICAÇÃO DA TAREFA
 
 function date(data) {
@@ -421,8 +430,6 @@ function date(data) {
   let dataFormatada = `${dia}/${mes}/${ano} - ${hora}:${minuto}:${segundo}`;
   return dataFormatada;
 }
-
-
 
 // EXIBIR TAREFAS REGISTRADAS NA TELA AO CARREGAR A PÁGINA
 
